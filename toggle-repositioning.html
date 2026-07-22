@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Toggle - Presold revenue for hospitality</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --blue:#1770FD;
+  --blue-deep:#0B4FC2;
+  --cyan:#45C1FF;
+  --ink:#354B64;
+  --ink-soft:#5B7085;
+  --white:#FFFFFF;
+  --wash:#F4F7FB;
+  --line:#E3EBF5;
+  --r:22px;
+  --r-lg:30px;
+  --shadow:0 24px 60px -28px rgba(23,112,253,.35);
+  --shadow-soft:0 18px 40px -26px rgba(53,75,100,.35);
+  --maxw:1180px;
+  --f:"Manrope","Lato",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:var(--f);color:var(--ink);background:var(--white);
+  font-size:17px;line-height:1.6;font-weight:400;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{margin:0;font-weight:800;line-height:1.05;letter-spacing:-.02em;color:var(--ink)}
+p{margin:0}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+.blue-tint{color:var(--blue)}
+.cyan-tint{color:var(--cyan)}
+
+/* ---------- buttons ---------- */
+.btn{display:inline-flex;align-items:center;gap:.5rem;font-weight:700;font-size:16px;
+  padding:15px 28px;border-radius:999px;border:2px solid transparent;cursor:pointer;
+  transition:transform .18s ease, box-shadow .18s ease, background .18s ease, color .18s ease;
+  white-space:nowrap}
+.btn-primary{background:var(--blue);color:#fff;box-shadow:0 12px 26px -12px rgba(23,112,253,.7)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 18px 34px -12px rgba(23,112,253,.75)}
+.btn-ghost{background:transparent;color:var(--blue);border-color:var(--line)}
+.btn-ghost:hover{border-color:var(--blue);transform:translateY(-2px)}
+.btn-white{background:#fff;color:var(--blue)}
+.btn-white:hover{transform:translateY(-2px);box-shadow:0 18px 34px -14px rgba(0,0,0,.35)}
+.btn-outline-white{background:transparent;color:#fff;border-color:rgba(255,255,255,.55)}
+.btn-outline-white:hover{border-color:#fff;transform:translateY(-2px)}
+
+/* ---------- nav ---------- */
+header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.86);
+  backdrop-filter:saturate(160%) blur(12px);border-bottom:1px solid var(--line)}
+.nav{display:flex;align-items:center;justify-content:space-between;height:74px}
+.brand{display:flex;align-items:center;gap:10px}
+.brand img{height:30px;width:auto}
+.brand .fallback{font-weight:800;font-size:26px;letter-spacing:-.03em;color:var(--blue);display:none}
+.brand .fallback span{color:var(--cyan)}
+.nav-links{display:flex;align-items:center;gap:34px}
+.nav-links a{font-weight:600;font-size:15.5px;color:var(--ink);opacity:.85}
+.nav-links a:hover{opacity:1;color:var(--blue)}
+.nav-cta{display:flex;align-items:center;gap:14px}
+.hamburger{display:none;background:none;border:0;cursor:pointer;padding:8px}
+.hamburger span{display:block;width:24px;height:2.5px;background:var(--ink);border-radius:2px;margin:5px 0;transition:.2s}
+
+/* ---------- hero ---------- */
+.hero{padding:76px 0 40px;position:relative;overflow:hidden}
+.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center}
+.eyebrow{display:inline-flex;align-items:center;gap:9px;font-weight:700;font-size:13px;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--blue);
+  background:rgba(23,112,253,.08);padding:8px 15px;border-radius:999px;margin-bottom:22px}
+.eyebrow .dot{width:8px;height:8px;border-radius:2px;background:var(--cyan)}
+.hero h1{font-size:clamp(40px,5.4vw,66px);letter-spacing:-.03em}
+.hero h1 .b{color:var(--blue)}
+.hero-sub{margin-top:22px;font-size:19px;line-height:1.55;color:var(--ink-soft);max-width:520px}
+.hero-cta{margin-top:32px;display:flex;gap:14px;flex-wrap:wrap}
+.hero-note{margin-top:18px;font-size:14px;color:var(--ink-soft)}
+
+/* hero visual */
+.stage{position:relative}
+.card-shop{background:#fff;border:1px solid var(--line);border-radius:var(--r-lg);
+  box-shadow:var(--shadow);padding:26px;position:relative;z-index:2;max-width:420px;margin-left:auto}
+.card-shop .top{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.pill{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--blue);background:rgba(23,112,253,.1);padding:6px 12px;border-radius:999px}
+.pill.live{color:#0a8a4a;background:rgba(10,138,74,.1)}
+.card-shop .thumb{height:120px;border-radius:18px;
+  background:linear-gradient(135deg,var(--blue),var(--cyan));position:relative;overflow:hidden}
+.card-shop .thumb::after{content:"";position:absolute;inset:0;
+  background:radial-gradient(120px 120px at 80% 20%,rgba(255,255,255,.35),transparent 60%)}
+.card-shop .prod{display:flex;justify-content:space-between;align-items:center;margin-top:16px}
+.card-shop .prod h4{font-size:17px}
+.card-shop .prod .amt{font-weight:800;font-size:20px;color:var(--ink)}
+.card-shop .row{display:flex;gap:8px;margin-top:14px}
+.chip{flex:1;text-align:center;font-size:12.5px;font-weight:700;color:var(--ink-soft);
+  border:1px solid var(--line);border-radius:12px;padding:9px 6px}
+.chip.on{color:#fff;background:var(--blue);border-color:var(--blue)}
+.float{position:absolute;background:#fff;border:1px solid var(--line);border-radius:16px;
+  box-shadow:var(--shadow-soft);padding:14px 16px;z-index:3;display:flex;gap:12px;align-items:center}
+.float .num{font-weight:800;font-size:22px;color:var(--blue);letter-spacing:-.02em}
+.float .lbl{font-size:12px;font-weight:600;color:var(--ink-soft);line-height:1.25}
+.float.f1{top:-22px;left:-14px}
+.float.f2{bottom:-26px;left:26px}
+.stage .halo{position:absolute;width:360px;height:360px;border-radius:50%;
+  background:radial-gradient(circle,rgba(69,193,255,.35),transparent 62%);
+  top:-40px;right:-40px;z-index:1;filter:blur(6px)}
+
+/* ---------- logo strip ---------- */
+.logos{padding:26px 0 44px}
+.logos p{text-align:center;font-size:13px;font-weight:700;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--ink-soft);margin-bottom:22px}
+.logo-row{display:flex;flex-wrap:wrap;justify-content:center;gap:14px 40px;align-items:center}
+.logo-row span{font-weight:800;font-size:20px;color:#9AAABC;letter-spacing:-.01em;
+  opacity:.9;transition:color .2s}
+.logo-row span:hover{color:var(--blue)}
+
+/* ---------- wave dividers ---------- */
+.wave{display:block;width:100%;height:70px}
+.wave svg{display:block;width:100%;height:100%}
+
+/* ---------- blue sections ---------- */
+.section{padding:84px 0}
+.blue{background:var(--blue);color:#fff}
+.blue h2,.blue h3,.blue h4{color:#fff}
+.blue .sub{color:rgba(255,255,255,.82)}
+.center{text-align:center}
+.kicker{font-weight:700;font-size:13px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--blue);margin-bottom:16px}
+.blue .kicker{color:var(--cyan)}
+.h2{font-size:clamp(30px,3.6vw,46px);letter-spacing:-.025em}
+.sub{font-size:18px;color:var(--ink-soft);max-width:640px}
+.center .sub{margin-left:auto;margin-right:auto}
+
+/* reposition */
+.reposition .h2{max-width:900px;margin:0 auto}
+.reposition .strike{color:rgba(255,255,255,.55)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:56px}
+.stat{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);
+  border-radius:var(--r);padding:30px 26px;backdrop-filter:blur(2px)}
+.stat .big{font-size:clamp(38px,4.6vw,54px);font-weight:800;letter-spacing:-.03em;
+  color:#fff;line-height:1}
+.stat .txt{margin-top:12px;font-size:15.5px;color:rgba(255,255,255,.85);line-height:1.4}
+.stat .who{margin-top:14px;font-size:12.5px;font-weight:700;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--cyan)}
+
+/* how it works */
+.flow{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;margin-top:54px}
+.step{position:relative;background:#fff;border:1px solid var(--line);border-radius:var(--r);
+  padding:34px 28px;box-shadow:var(--shadow-soft)}
+.step .n{font-size:14px;font-weight:800;color:var(--cyan);letter-spacing:.08em}
+.step h3{font-size:23px;margin:10px 0 12px}
+.step p{color:var(--ink-soft);font-size:15.5px}
+.step .arc{position:absolute;top:44px;right:-26px;width:26px;height:2px;background:var(--line)}
+
+/* plans */
+.plans-head{display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap;margin-bottom:44px}
+.tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;align-items:start}
+.tier{background:#fff;border:1.5px solid var(--line);border-radius:var(--r-lg);padding:32px 28px;
+  position:relative;transition:transform .2s ease, box-shadow .2s ease}
+.tier:hover{transform:translateY(-4px);box-shadow:var(--shadow-soft)}
+.tier.feature{border-color:var(--blue);box-shadow:var(--shadow);transform:translateY(-6px)}
+.tier .flag{position:absolute;top:-14px;left:28px;background:var(--blue);color:#fff;
+  font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  padding:6px 14px;border-radius:999px}
+.tier .tname{font-size:24px;letter-spacing:-.02em}
+.tier .job{margin-top:10px;color:var(--ink-soft);font-size:15px;min-height:44px}
+.tier .incl{margin-top:16px;font-size:13px;font-weight:700;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--blue)}
+.tier ul{list-style:none;padding:0;margin:14px 0 26px;display:grid;gap:11px}
+.tier li{position:relative;padding-left:28px;font-size:15px;color:var(--ink)}
+.tier li::before{content:"";position:absolute;left:0;top:3px;width:18px;height:18px;border-radius:6px;
+  background:rgba(23,112,253,.12);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231770FD' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:center;background-size:12px}
+.tier .btn{width:100%;justify-content:center}
+
+/* testimonials */
+.quotes{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:52px}
+.quote{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);
+  border-radius:var(--r);padding:30px 28px;display:flex;flex-direction:column;gap:18px}
+.quote .mark{font-size:44px;font-weight:800;line-height:.6;color:var(--cyan)}
+.quote p{font-size:17px;line-height:1.5;color:#fff;flex:1}
+.quote .by{font-size:14px}
+.quote .by b{display:block;color:#fff;font-weight:700}
+.quote .by span{color:rgba(255,255,255,.7)}
+
+/* plan finder */
+.finder{background:var(--wash);border:1px solid var(--line);border-radius:var(--r-lg);
+  padding:40px;margin-top:44px}
+.finder .fq{font-size:14px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--ink-soft);margin-bottom:14px}
+.opts{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:30px}
+.opt{border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:11px 20px;
+  font-weight:700;font-size:15px;color:var(--ink);cursor:pointer;transition:.15s}
+.opt:hover{border-color:var(--blue)}
+.opt.sel{background:var(--blue);color:#fff;border-color:var(--blue)}
+.goalgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:8px}
+.goal{border:1.5px solid var(--line);background:#fff;border-radius:16px;padding:18px;cursor:pointer;transition:.15s}
+.goal:hover{border-color:var(--blue)}
+.goal.sel{border-color:var(--blue);background:rgba(23,112,253,.06)}
+.goal b{display:block;font-size:16px;margin-bottom:6px}
+.goal small{color:var(--ink-soft);font-size:13.5px;line-height:1.4}
+.result{margin-top:30px;background:#fff;border:1.5px solid var(--blue);border-radius:var(--r);
+  padding:28px;display:none;align-items:center;justify-content:space-between;gap:22px;flex-wrap:wrap}
+.result.show{display:flex}
+.result .rlabel{font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--blue)}
+.result .rtier{font-size:26px;font-weight:800;letter-spacing:-.02em;margin:4px 0 6px}
+.result .rwhy{color:var(--ink-soft);font-size:15px;max-width:460px}
+
+/* final cta */
+.final{text-align:center}
+.final .h2{max-width:760px;margin:0 auto}
+.final .sub{color:rgba(255,255,255,.85);margin:18px auto 34px}
+.final .btn-row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+
+/* footer */
+footer{background:#0C2440;color:rgba(255,255,255,.7);padding:56px 0 34px;font-size:14.5px}
+.foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:34px}
+footer .brand .fallback{color:#fff}
+footer h5{color:#fff;font-size:13px;letter-spacing:.1em;text-transform:uppercase;margin:0 0 16px;font-weight:700}
+footer a{display:block;color:rgba(255,255,255,.7);margin-bottom:10px}
+footer a:hover{color:#fff}
+.foot-addr{margin-top:18px;line-height:1.7;font-size:14px}
+.foot-bottom{border-top:1px solid rgba(255,255,255,.12);margin-top:40px;padding-top:22px;
+  display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:13px;color:rgba(255,255,255,.5)}
+
+/* reveal */
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .7s ease, transform .7s ease}
+.reveal.in{opacity:1;transform:none}
+
+/* responsive */
+@media(max-width:960px){
+  .hero-grid{grid-template-columns:1fr;gap:44px}
+  .stage{max-width:440px;margin:0 auto}
+  .flow,.stats,.tiers,.quotes,.goalgrid{grid-template-columns:1fr}
+  .step .arc{display:none}
+  .foot-grid{grid-template-columns:1fr 1fr}
+  .nav-links,.nav-cta .btn-ghost{display:none}
+  .hamburger{display:block}
+  .nav-links.open{display:flex;position:absolute;top:74px;left:0;right:0;background:#fff;
+    flex-direction:column;gap:0;padding:8px 24px 20px;border-bottom:1px solid var(--line)}
+  .nav-links.open a{padding:14px 0;border-bottom:1px solid var(--wash);width:100%}
+}
+@media(max-width:560px){
+  body{font-size:16px}
+  .section{padding:60px 0}
+  .finder{padding:26px}
+  .float{display:none}
+}
+@media (prefers-reduced-motion: reduce){
+  .reveal{opacity:1;transform:none;transition:none}
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body>
+
+<!-- ================= NAV ================= -->
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="#top" aria-label="Toggle home">
+      <img src="https://cdn.prod.website-files.com/60fa8559f5a36b6e968b6ed3/6167f8ec365654146ebb00cb_Toggle_Web_logo_colour-07.png" alt="toggle" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <span class="fallback">toggle<span>.</span></span>
+    </a>
+    <nav class="nav-links" id="navlinks">
+      <a href="#reposition">Presold revenue</a>
+      <a href="#how">How it works</a>
+      <a href="#plans">Plans</a>
+      <a href="#results">Results</a>
+    </nav>
+    <div class="nav-cta">
+      <a class="btn btn-ghost" href="#finder">Find your plan</a>
+      <a class="btn btn-primary" href="#demo">Book a demo</a>
+      <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<a id="top"></a>
+
+<!-- ================= HERO ================= -->
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div class="reveal in">
+      <span class="eyebrow"><span class="dot"></span>Hospitality commerce</span>
+      <h1>Presold revenue<br><span class="b">for hospitality.</span></h1>
+      <p class="hero-sub">Gift cards, experiences and tickets - sold today, redeemed later. Toggle turns your brand into cash in the bank before your guest walks in, then helps you grow and scale it across the estate.</p>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="#demo">Book a demo</a>
+        <a class="btn btn-ghost" href="#how">See how it works</a>
+      </div>
+      <p class="hero-note">Live in hours, not weeks. Built with operators, for operators.</p>
+    </div>
+
+    <div class="stage reveal in">
+      <div class="halo"></div>
+      <div class="float f1"><div class="num" data-count="10" data-suffix="x">0x</div><div class="lbl">sales uplift<br>after switching</div></div>
+      <div class="card-shop">
+        <div class="top"><span class="pill">Your shop</span><span class="pill live">Selling now</span></div>
+        <div class="thumb"></div>
+        <div class="prod"><h4>Dinner for two</h4><span class="amt">&pound;80</span></div>
+        <div class="row">
+          <span class="chip on">Gift card</span>
+          <span class="chip">Experience</span>
+          <span class="chip">Ticket</span>
+        </div>
+      </div>
+      <div class="float f2"><div class="num">Paid today</div><div class="lbl">redeemed<br>in-venue later</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= LOGOS ================= -->
+<section class="logos">
+  <div class="wrap">
+    <p>Trusted by hospitality brands</p>
+    <div class="logo-row" aria-label="Customer brands">
+      <span>Wahaca</span><span>Leon</span><span>Gail's</span><span>Franco Manca</span>
+      <span>YO! Sushi</span><span>Zizzi</span><span>Rosa's Thai</span><span>The Alchemist</span>
+      <span>Black Sheep Coffee</span><span>JW Lees</span>
+    </div>
+  </div>
+</section>
+
+<!-- wave into blue -->
+<div class="wave" aria-hidden="true"><svg viewBox="0 0 1440 70" preserveAspectRatio="none"><path d="M0,40 C240,80 480,0 720,30 C960,60 1200,10 1440,40 L1440,70 L0,70 Z" fill="#1770FD"/></svg></div>
+
+<!-- ================= REPOSITION + STATS ================= -->
+<section class="section blue reposition" id="reposition">
+  <div class="wrap center">
+    <p class="kicker">More than gift cards</p>
+    <h2 class="h2">Toggle is a <span class="cyan-tint">presold revenue</span> platform. Gift cards are where it starts - experiences, tickets, repeat top-ups, referrals and corporate gifting are where it grows.</h2>
+    <div class="stats">
+      <div class="stat reveal"><div class="big"><span data-count="10" data-suffix="x">0x</span></div><div class="txt">Sales boosted after moving gifting to Toggle.</div><div class="who">Pizza Room</div></div>
+      <div class="stat reveal"><div class="big">12-in-1</div><div class="txt">Sold more in a single December than in the previous twelve months.</div><div class="who">Boston Tea Party</div></div>
+      <div class="stat reveal"><div class="big">Hours</div><div class="txt">Up and running the same day, not weeks of setup.</div><div class="who">Incipio Group</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- wave into white -->
+<div class="wave" aria-hidden="true"><svg viewBox="0 0 1440 70" preserveAspectRatio="none"><path d="M0,30 C240,-10 480,60 720,40 C960,20 1200,70 1440,30 L1440,0 L0,0 Z" fill="#1770FD"/></svg></div>
+
+<!-- ================= HOW IT WORKS ================= -->
+<section class="section" id="how">
+  <div class="wrap center">
+    <p class="kicker">How it works</p>
+    <h2 class="h2">Capture it. Grow it. Scale it.</h2>
+    <p class="sub">Three jobs, one platform. Start by capturing presold revenue across every channel, grow it into repeat purchase, then scale it across your whole estate.</p>
+  </div>
+  <div class="wrap">
+    <div class="flow">
+      <div class="step reveal"><div class="arc"></div><div class="n">01 / CAPTURE</div><h3>Get revenue flowing</h3><p>Sell gift cards, experiences and tickets from your website, in venue and through your order &amp; pay apps. Physical and digital, wallet-ready, live in hours.</p></div>
+      <div class="step reveal"><div class="arc"></div><div class="n">02 / GROW</div><h3>Turn one sale into many</h3><p>Repeat and automated top-ups, promotions, referrals and Champions - with the insight to know exactly what is working and do more of it.</p></div>
+      <div class="step reveal"><div class="n">03 / SCALE</div><h3>Take it across the estate</h3><p>Multi-brand management, corporate and bulk gifting, managed shop builds and a dedicated team to run the biggest presold revenue programmes.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PLANS ================= -->
+<section class="section" id="plans" style="background:var(--wash)">
+  <div class="wrap">
+    <div class="plans-head">
+      <div>
+        <p class="kicker">Plans</p>
+        <h2 class="h2">Pick the job you are hiring Toggle to do.</h2>
+      </div>
+      <p class="sub" style="margin:0">Every plan builds on the last. Start where you are, move up when you are ready. Pricing is tailored to your estate - book a demo for a quote.</p>
+    </div>
+    <div class="tiers">
+
+      <div class="tier reveal">
+        <h3 class="tname">Revenue Capture</h3>
+        <p class="job">Get presold revenue flowing across every channel.</p>
+        <p class="incl">What's included</p>
+        <ul>
+          <li>Personalised online shop for gift cards and experiences</li>
+          <li>Sell and redeem in venue and via order &amp; pay</li>
+          <li>Physical cards, Apple and Google Wallet</li>
+          <li>Promotions, offers and free-of-charge issuance</li>
+          <li>B2B and B2C sales</li>
+          <li>Reporting and gift-card liability view</li>
+          <li>Airship CRM integration</li>
+          <li>24/7 Academy and unlimited team support</li>
+        </ul>
+        <a class="btn btn-ghost" href="#demo">Book a demo</a>
+      </div>
+
+      <div class="tier feature reveal">
+        <span class="flag">Most popular</span>
+        <h3 class="tname">Revenue Growth</h3>
+        <p class="job">Grow it - repeat purchase, promotions, referrals and insight.</p>
+        <p class="incl">Everything in Capture, plus</p>
+        <ul>
+          <li>Repeat and automated top-ups</li>
+          <li>Referral scheme and Champions advocacy</li>
+          <li>Automated journeys and advanced promotions</li>
+          <li>Ask Toggle - AI-powered insight</li>
+          <li>Toggle Tickets</li>
+          <li>Shopify and WooCommerce integrations</li>
+          <li>Managed fulfilment, print and design</li>
+          <li>Named account management</li>
+        </ul>
+        <a class="btn btn-primary" href="#demo">Book a demo</a>
+      </div>
+
+      <div class="tier reveal">
+        <h3 class="tname">Revenue at Scale</h3>
+        <p class="job">Scale it across the estate and corporate channels.</p>
+        <p class="incl">Everything in Growth, plus</p>
+        <ul>
+          <li>Multi-brand estate management</li>
+          <li>Corporate and bulk gifting channel</li>
+          <li>Bulk orders</li>
+          <li>Managed shop build</li>
+          <li>Strategic account manager</li>
+          <li>Special projects</li>
+        </ul>
+        <a class="btn btn-ghost" href="#demo">Talk to us</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- wave into blue -->
+<div class="wave" aria-hidden="true"><svg viewBox="0 0 1440 70" preserveAspectRatio="none"><path d="M0,40 C240,80 480,0 720,30 C960,60 1200,10 1440,40 L1440,70 L0,70 Z" fill="#1770FD"/></svg></div>
+
+<!-- ================= RESULTS ================= -->
+<section class="section blue" id="results">
+  <div class="wrap center">
+    <p class="kicker">Results</p>
+    <h2 class="h2">Operators who get it, growing with a partner who does too.</h2>
+  </div>
+  <div class="wrap">
+    <div class="quotes">
+      <div class="quote reveal"><div class="mark">&ldquo;</div><p>Fully customisable, really easy to use, and it integrates with our ordering platform. Last December alone we sold more than in the previous twelve months.</p><div class="by"><b>Anita Atkins</b><span>Brand Director, Boston Tea Party</span></div></div>
+      <div class="quote reveal"><div class="mark">&ldquo;</div><p>What we loved about Airship and Toggle is their focus on hospitality. They get it. They love it. They feel like true partners we can grow with.</p><div class="by"><b>Lyndsay Anderson</b><span>Marketing Director, Dirty Bones</span></div></div>
+      <div class="quote reveal"><div class="mark">&ldquo;</div><p>From planning to integrations and launch, the team shared dedication, expertise and flexible product development, with a real understanding of our industry.</p><div class="by"><b>Stephanie Lloyd</b><span>Sales &amp; Marketing Director, New World Trading Company</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- wave into white -->
+<div class="wave" aria-hidden="true"><svg viewBox="0 0 1440 70" preserveAspectRatio="none"><path d="M0,30 C240,-10 480,60 720,40 C960,20 1200,70 1440,30 L1440,0 L0,0 Z" fill="#1770FD"/></svg></div>
+
+<!-- ================= PLAN FINDER ================= -->
+<section class="section" id="finder">
+  <div class="wrap center">
+    <p class="kicker">Build your plan</p>
+    <h2 class="h2">Find the right Toggle in 20 seconds.</h2>
+    <p class="sub">Tell us your size and what you want to do. We will point you to the right plan and put together a quote tailored to your estate.</p>
+  </div>
+  <div class="wrap">
+    <div class="finder">
+      <p class="fq">1. How many locations do you have?</p>
+      <div class="opts" id="locOpts">
+        <button class="opt" data-loc="1">1</button>
+        <button class="opt" data-loc="s">2-5</button>
+        <button class="opt" data-loc="m">6-15</button>
+        <button class="opt" data-loc="l">16-50</button>
+        <button class="opt" data-loc="xl">50+</button>
+      </div>
+      <p class="fq">2. What do you most want to do?</p>
+      <div class="goalgrid" id="goalOpts">
+        <div class="goal" data-goal="capture"><b>Start selling</b><small>Get gift cards, experiences and tickets live across every channel.</small></div>
+        <div class="goal" data-goal="grow"><b>Grow repeat revenue</b><small>Top-ups, promotions, referrals and insight to sell more, more often.</small></div>
+        <div class="goal" data-goal="scale"><b>Scale the estate</b><small>Multi-brand, corporate and bulk gifting with a dedicated team.</small></div>
+      </div>
+      <div class="result" id="result">
+        <div>
+          <div class="rlabel">Recommended plan</div>
+          <div class="rtier" id="rtier">Revenue Capture</div>
+          <div class="rwhy" id="rwhy"></div>
+        </div>
+        <a class="btn btn-primary" href="#demo">Get your tailored quote</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FINAL CTA ================= -->
+<section class="section blue final" id="demo">
+  <div class="wrap">
+    <p class="kicker">Get started</p>
+    <h2 class="h2">See your presold revenue potential.</h2>
+    <p class="sub">Get to know Toggle from one of our team. No obligation, no nonsense - just a walk-through of what presold revenue could do for your brand.</p>
+    <div class="btn-row">
+      <a class="btn btn-white" href="https://www.usetoggle.com/demo">Book a demo</a>
+      <a class="btn btn-outline-white" href="https://www.usetoggle.com/showcase">See a live shop</a>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <a class="brand" href="#top" aria-label="Toggle home">
+          <img src="https://cdn.prod.website-files.com/60fa8559f5a36b6e968b6ed3/6192871044cc5a06088a5f19_Logo-on-blue.png" alt="toggle" style="height:30px" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+          <span class="fallback" style="color:#fff">toggle<span style="color:var(--cyan)">.</span></span>
+        </a>
+        <p class="foot-addr">Presold revenue for hospitality.<br>Gift cards, experiences and tickets.<br><br>Sheffield office<br>16 South Street, Park Hill<br>Sheffield, S2 5QX<br>0114 299 6477</p>
+      </div>
+      <div>
+        <h5>Product</h5>
+        <a href="#reposition">Presold revenue</a>
+        <a href="#how">How it works</a>
+        <a href="#plans">Plans</a>
+        <a href="#finder">Find your plan</a>
+      </div>
+      <div>
+        <h5>Company</h5>
+        <a href="https://www.usetoggle.com/showcase">Togglers</a>
+        <a href="https://www.usetoggle.com/testimonials">Testimonials</a>
+        <a href="https://www.usetoggle.com/demo">Contact</a>
+        <a href="http://academy.usetoggle.com/en/">Academy</a>
+      </div>
+      <div>
+        <h5>Get started</h5>
+        <a href="#demo">Book a demo</a>
+        <a href="https://dashboard.mytoggle.io/login">Login</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>&copy; 2026 Toggle. All rights reserved. Registered in England No. 4225467.</span>
+      <span>Part of Volaris Group.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* mobile nav */
+document.getElementById('hamburger').addEventListener('click',function(){
+  document.getElementById('navlinks').classList.toggle('open');
+});
+document.querySelectorAll('#navlinks a').forEach(function(a){
+  a.addEventListener('click',function(){document.getElementById('navlinks').classList.remove('open');});
+});
+
+/* scroll reveal + count-up */
+var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+function countUp(el){
+  var target = parseFloat(el.getAttribute('data-count'));
+  var suffix = el.getAttribute('data-suffix') || '';
+  if(reduce){ el.textContent = target + suffix; return; }
+  var start = null, dur = 1100;
+  function tick(ts){
+    if(!start) start = ts;
+    var p = Math.min((ts-start)/dur,1);
+    var val = Math.round(target * (0.5 - Math.cos(Math.PI*p)/2));
+    el.textContent = val + suffix;
+    if(p<1) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+var io = new IntersectionObserver(function(entries){
+  entries.forEach(function(e){
+    if(e.isIntersecting){
+      e.target.classList.add('in');
+      e.target.querySelectorAll('[data-count]').forEach(countUp);
+      if(e.target.hasAttribute('data-count')) countUp(e.target);
+      io.unobserve(e.target);
+    }
+  });
+},{threshold:.2});
+document.querySelectorAll('.reveal,[data-count]').forEach(function(el){io.observe(el);});
+
+/* plan finder */
+var state = {loc:null, goal:null};
+var tiers = {
+  capture:{name:'Revenue Capture', why:'Get presold revenue flowing across every channel - gift cards, experiences and tickets, live fast.'},
+  grow:{name:'Revenue Growth', why:'Everything in Capture, plus repeat top-ups, promotions, referrals and the insight to grow repeat revenue.'},
+  scale:{name:'Revenue at Scale', why:'Everything in Growth, plus multi-brand, corporate and bulk gifting with a dedicated team behind you.'}
+};
+function recommend(){
+  if(!state.loc || !state.goal) return;
+  var t = state.goal;
+  // large estates lean towards Scale even if they only picked "grow"
+  if(state.loc==='xl') t = 'scale';
+  else if(state.loc==='l' && state.goal==='grow') t = 'grow';
+  var r = tiers[t];
+  document.getElementById('rtier').textContent = r.name;
+  document.getElementById('rwhy').textContent = r.why;
+  document.getElementById('result').classList.add('show');
+}
+document.querySelectorAll('#locOpts .opt').forEach(function(b){
+  b.addEventListener('click',function(){
+    document.querySelectorAll('#locOpts .opt').forEach(function(x){x.classList.remove('sel');});
+    b.classList.add('sel'); state.loc=b.getAttribute('data-loc'); recommend();
+  });
+});
+document.querySelectorAll('#goalOpts .goal').forEach(function(g){
+  g.addEventListener('click',function(){
+    document.querySelectorAll('#goalOpts .goal').forEach(function(x){x.classList.remove('sel');});
+    g.classList.add('sel'); state.goal=g.getAttribute('data-goal'); recommend();
+  });
+});
+</script>
+</body>
+</html>
